@@ -134,11 +134,9 @@ if [ "$AUTOUPQ" = "y" ]; then
 fi
 
 
+echo " is it done? "
 
 
-
-# after postfix install
-# disable local delviery? if yes then: postconf mydestination=localhost
 
 
 
