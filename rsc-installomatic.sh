@@ -3,11 +3,15 @@
 # Run as root, of course.
 # Gavin Silver - 2013 - gavinsilver@gavinsilver.com
 
+DATE=$(date +"%Y%m%d%H%M")
+logfile=rsc-installomatic`$DATE`.log
+exec > $logfile 2>&1
+
 echo " "
 echo " "
 echo " "
 echo "Welcome to Gavin's wonderful install-o-matic for rackspace cloud servers"
-echo " "
+echo ""
 echo " "
 
 # Make sure only root can run our script
