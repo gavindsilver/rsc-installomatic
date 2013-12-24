@@ -17,6 +17,13 @@ if [[ $EUID -ne 0 ]]; then
 fi
 # ...
 
+# Version check for Ubuntu 12.04
+/etc/lsb-release
+if ["$DISTRIB_RELEASE" != "12.04"]; then
+   echo "This script is only tested to work (sorta) on Ubuntu 12.04 LTS" 1>&2
+   exit 1
+fi
+# ...
 
 # Make sure the human didnt accidentally run the file?
 read -p "Would you like to continue? (y/n) " RESP
