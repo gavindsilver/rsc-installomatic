@@ -4,7 +4,7 @@
 # Gavin Silver - 2013 - gavinsilver@gavinsilver.com
 
 DATE=$(date +"%Y%m%d%H%M")
-logfile=rsc-installomatic`$DATE`.log
+logfile="rsc-installomatic"+$DATE+".log"
 exec > $logfile 2>&1
 
 echo " "
