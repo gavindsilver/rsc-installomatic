@@ -37,7 +37,7 @@ fi
 # Optional options from the dept. of redundancy dept.
 read -p "Do you want webmin installed? (y/n)" WEBMINQ
 read -p "Do you want Postfix installed for mail? (y/n)" POSTFIXQ
-if [ "$POSTFIXQ" != "y" ]; then
+if [ "$POSTFIXQ" = "y" ]; then
 	read -e -p "What email should we use for postmaster/abuse/root etc?" POSTFIXALIAS
 	read -p "Should we disable local delivery for $HOSTNAME ? (y/n)" POSTFIXDDQ
 fi
