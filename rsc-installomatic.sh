@@ -13,6 +13,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 # ...
 
+
 # Make sure the human didnt accidentally run the file?
 read -p "Would you like to continue? (y/n) " RESP
 if [ "$RESP" = "y" ]; then
@@ -24,4 +25,20 @@ fi
 # ...
 
 
-read -p "
+# Ask for new root mysql password, in the future handle this better (we shouldnt output the passwd to console)
+# quit if the user typos
+read -p "What password would you like to use for the MySQL installation?" SQLPWD
+read -p "$SQLPWD - is this correct? (y/n) " RESP
+if [ "$RESP" != "y" ]; then
+   exit
+fi
+# ...
+
+read -p "Do you want webmin installed? (y/n)" WEBMINQ
+
+
+
+apt-get update
+echo mysql-server-5.1 mysql-server/root_password password $SQLPWD | debconf-set-selections
+echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debconf-set-selections
+apt-get install -y mysql-server
