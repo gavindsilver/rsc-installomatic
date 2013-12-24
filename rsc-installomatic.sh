@@ -6,7 +6,7 @@
 echo " "
 echo " "
 echo " "
-echo "Welcome to Gavin's wonderful wordpress-o-matic installer for rackspace cloud servers"
+echo "Welcome to Gavin's wonderful install-o-matic for rackspace cloud servers"
 echo " "
 echo " "
 
