@@ -116,6 +116,10 @@ if [ "$POSTFIXQ" = "y" ]; then
 	echo "postfix postfix/mailname string $HOSTNAME" | debconf-set-selections
 	echo "postfix postfix/destinations string localhost.localdomain, localhost" | debconf-set-selections
 	apt-get install -y postfix
+	/usr/sbin/postconf -e "inet_interfaces = loopback-only"
+	echo "setting $POSTFIXALIAS as alias for root mail and restarting postfix..."
+	echo "root:	$POSTFIXALIAS" >> /etc/aliases
+	service postfix restart
 fi
 
 if [ "$WEBMINQ" = "y" ]; then
