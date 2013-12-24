@@ -62,10 +62,9 @@ fi
 
 # Optional options from the dept. of redundancy dept.
 read -p "Do you want webmin installed? (y/n) " WEBMINQ
-read -p "Do you want Postfix installed for mail? (y/n) " POSTFIXQ
+read -p "Do you want Postfix installed for mail with disabled local delivery? (y/n) " POSTFIXQ
 	if [ "$POSTFIXQ" = "y" ]; then
 		read -e -p "What email should we use for postmaster/abuse/root etc? " POSTFIXALIAS
-		read -p "Should we disable local delivery for $HOSTNAME ? (y/n) " POSTFIXDDQ
 	fi
 	
 read -p "Do you want to setup auto-updates? (y/n) " AUTOUPQ
@@ -113,6 +112,9 @@ echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debcon
 apt-get install -y lamp-server^ php5-gd
 
 if [ "$POSTFIXQ" = "y" ]; then
+	echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections
+	echo "postfix postfix/mailname string $HOSTNAME" | debconf-set-selections
+	echo "postfix postfix/destinations string localhost.localdomain, localhost" | debconf-set-selections
 	apt-get install -y postfix
 fi
 
@@ -126,16 +128,16 @@ a2enmod rewrite
 service apache2 restart
 
 
-# post-postfix install config setup
-if [ "$POSTFIXQ" = "y" ]; then
-	echo "setting $POSTFIXALIAS as alias for root mail"
-	echo "root:	$POSTFIXALIAS" >> /etc/aliases
-	if [ "$POSTFIXDDQ" = "y" ]; then
-		echo "disabling local delivery for $HOSTNAME"
-		postconf mydestination=localhost
-	fi
-service postfix restart
-fi
+## post-postfix install config setup
+# if [ "$POSTFIXQ" = "y" ]; then
+#	echo "setting $POSTFIXALIAS as alias for root mail"
+#	echo "root:	$POSTFIXALIAS" >> /etc/aliases
+#	if [ "$POSTFIXDDQ" = "y" ]; then
+#		echo "disabling local delivery for $HOSTNAME"
+#		postconf mydestination=localhost
+#	fi
+# service postfix restart
+# fi
 
 if [ "$AUTOUPQ" = "y" ]; then
 	echo "setting up unattended security updates and email alerts..."
