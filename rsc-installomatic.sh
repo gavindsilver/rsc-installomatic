@@ -34,15 +34,27 @@ if [ "$RESP" != "y" ]; then
 fi
 # ...
 
+# Optional options from the dept. of redundancy dept.
 read -p "Do you want webmin installed? (y/n)" WEBMINQ
 read -p "Do you want Postfix installed for mail? (y/n)" POSTFIXQ
 if [ "$POSTFIXQ" != "y" ]; then
-   read -p "Should we disable local delivery for $strHost ? (y/n)" POSTFIXDDQ
-   
+	read -e -p "What email should we use for postmaster/abuse/root etc?" POSTFIXALIAS
+	read -p "Should we disable local delivery for $HOSTNAME ? (y/n)" POSTFIXDDQ
 fi
+# ...
 
 
-apt-get update
-echo mysql-server-5.1 mysql-server/root_password password $SQLPWD | debconf-set-selections
-echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debconf-set-selections
-apt-get install -y mysql-server
+# echo my output so far for testing
+
+echo "your mysql pwd will be $SQLPWD"
+echo "install webmin?- $WEBMINQ"
+echo "install postfix?- $POSTFIXQ"
+echo "your postfix alias is- $POSTFIXALIAS"
+echo "are we disabling local delivery for $HOSTNAME ? - $POSTFIXDDQ "
+
+
+# apt-get update
+
+# echo mysql-server-5.1 mysql-server/root_password password $SQLPWD | debconf-set-selections
+# echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debconf-set-selections
+# apt-get install -y mysql-server
