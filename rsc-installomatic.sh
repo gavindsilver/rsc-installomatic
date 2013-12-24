@@ -37,7 +37,7 @@ fi
 
 
 #set hostname
-read -p "Set your hosrname (e.g. gavinsilver.com or www.gavinsilver.com): " NEWHOSTSTRING
+read -p "Set your hostname (e.g. gavinsilver.com or www.gavinsilver.com): " NEWHOSTSTRING
 read -p "$NEWHOSTSTRING - is this correct? (y/n) " RESP
 	if [ "$RESP" != "y" ]; then
 		echo "cowardly exiting the program because im too lazy to re-ask, run again and type correctly please"
