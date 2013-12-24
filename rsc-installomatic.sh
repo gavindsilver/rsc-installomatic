@@ -66,12 +66,11 @@ read -p "Do you want to setup auto-updates? (y/n) " AUTOUPQ
 
 
 # echo my output so far for testing
-
-echo "your mysql pwd will be $SQLPWD"
-echo "install webmin?- $WEBMINQ"
-echo "install postfix?- $POSTFIXQ"
-echo "your postfix alias is- $POSTFIXALIAS"
-echo "are we disabling local delivery for $HOSTNAME ? - $POSTFIXDDQ "
+# echo "your mysql pwd will be $SQLPWD"
+# echo "install webmin?- $WEBMINQ"
+# echo "install postfix?- $POSTFIXQ"
+# echo "your postfix alias is- $POSTFIXALIAS"
+# echo "are we disabling local delivery for $HOSTNAME ? - $POSTFIXDDQ "
 
 # Do webmin Stuff
 if [ "$WEBMINQ" = "y" ]; then
@@ -100,6 +99,33 @@ echo mysql-server-5.1 mysql-server/root_password password $SQLPWD | debconf-set-
 echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debconf-set-selections
 # ...
 
+# DO IT!
+apt-get install -y lamp-server^
+apt-get install -y php5-gd postfix
+apt-get install -y webmin
+
+# post-postfix install config setup
+if [ "$POSTFIXQ" = "y" ]; then
+echo "setting $POSTFIXALIAS as alias for root mail"
+	if [ "$POSTFIXDDQ" = "y" ]; then
+		echo "disabling local delivery for $HOSTNAME"
+		postconf mydestination=localhost
+	fi
+fi
 
 
-# apt-get install -y mysql-server
+
+
+
+
+
+# after postfix install
+# disable local delviery? if yes then: postconf mydestination=localhost
+
+
+
+
+
+
+
+
