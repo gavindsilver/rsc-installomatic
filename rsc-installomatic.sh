@@ -31,6 +31,14 @@ fi
 
 # Ask for new root mysql password, in the future handle this better (we shouldnt output the passwd to console)
 # quit if the user typos
+read -p "Set your hosrname (e.g. gavinsilver.com or www.gavinsilver.com): " NEWHOSTSTRING
+read -p "$NEWHOSTSTRING - is this correct? (y/n) " RESP
+	if [ "$RESP" != "y" ]; then
+		echo "cowardly exiting the program because im too lazy to re-ask, run again and type correctly please"
+		exit
+	fi
+/bin/hostname $NEWHOSTSTRING
+
 read -p "What password would you like to use for the MySQL installation? " SQLPWD
 read -p "$SQLPWD - is this correct? (y/n) " RESP
 if [ "$RESP" != "y" ]; then
@@ -72,11 +80,19 @@ if [ "$WEBMINQ" = "y" ]; then
 fi
 # ...
 
-# update 
+
+
+# update & upgrade
 apt-get update
+apt-get -y upgrade
 # ..
 
+# add pre-req for webmin
+apt-get install -y perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+
+
 # preset mysql pass info
+echo "adding password info to mysql files"
 echo mysql-server-5.1 mysql-server/root_password password $SQLPWD | debconf-set-selections
 echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debconf-set-selections
 # ...
