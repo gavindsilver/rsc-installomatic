@@ -100,17 +100,26 @@ echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debcon
 # ...
 
 # DO IT!
-apt-get install -y lamp-server^
-apt-get install -y php5-gd postfix
-apt-get install -y webmin
+apt-get install -y lamp-server^ php5-gd
+
+if [ "$POSTFIXQ" = "y" ]; then
+	apt-get install -y postfix
+fi
+
+if [ "$WEBMINQ" = "y" ]; then
+	apt-get install -y webmin
+fi
+
 
 # post-postfix install config setup
 if [ "$POSTFIXQ" = "y" ]; then
-echo "setting $POSTFIXALIAS as alias for root mail"
+	echo "setting $POSTFIXALIAS as alias for root mail"
+	echo "root:	$POSTFIXALIAS" >> /etc/aliases
 	if [ "$POSTFIXDDQ" = "y" ]; then
 		echo "disabling local delivery for $HOSTNAME"
 		postconf mydestination=localhost
 	fi
+service postfix restart
 fi
 
 
