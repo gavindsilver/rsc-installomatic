@@ -110,6 +110,11 @@ if [ "$WEBMINQ" = "y" ]; then
 	apt-get install -y webmin
 fi
 
+# post-apache isntall config
+echo "this is where i should alert alloqoverride for htaccess to work"
+a2enmod rewrite
+service apache2 restart
+
 
 # post-postfix install config setup
 if [ "$POSTFIXQ" = "y" ]; then
@@ -122,7 +127,11 @@ if [ "$POSTFIXQ" = "y" ]; then
 service postfix restart
 fi
 
-
+if [ "$AUTOUPQ" = "y" ]; then
+	echo "setting up unattended security updates and email alerts..."
+	apt-get -y install unattended-upgrades apticron;sed -i -e 's/root/alerts@vanwestmedia.com/' /etc/apticron/apticron.conf
+	sed -i -e 's|//Unattended-Upgrade::Mail "root@localhost"|Unattended-Upgrade::Mail '$ALERTALIAS'|' /etc/apt/apt.conf.d/50unattended-upgrades
+fi
 
 
 
