@@ -42,10 +42,15 @@ fi
 # Optional options from the dept. of redundancy dept.
 read -p "Do you want webmin installed? (y/n) " WEBMINQ
 read -p "Do you want Postfix installed for mail? (y/n) " POSTFIXQ
-if [ "$POSTFIXQ" = "y" ]; then
-	read -e -p "What email should we use for postmaster/abuse/root etc? " POSTFIXALIAS
-	read -p "Should we disable local delivery for $HOSTNAME ? (y/n) " POSTFIXDDQ
-fi
+	if [ "$POSTFIXQ" = "y" ]; then
+		read -e -p "What email should we use for postmaster/abuse/root etc? " POSTFIXALIAS
+		read -p "Should we disable local delivery for $HOSTNAME ? (y/n) " POSTFIXDDQ
+	fi
+	
+read -p "Do you want to setup auto-updates? (y/n) " AUTOUPQ
+	if [ "$AUTOUPQ" = "y" ]; then
+		read -e -p "What email should we use for alerts? " ALERTALIAS
+	fi
 # ...
 
 
@@ -65,11 +70,17 @@ if [ "$WEBMINQ" = "y" ]; then
 	echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
 	echo "deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib" >> /etc/apt/sources.list	
 fi
+# ...
 
-
-# update system
+# update 
 apt-get update
+# ..
 
-# echo mysql-server-5.1 mysql-server/root_password password $SQLPWD | debconf-set-selections
-# echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debconf-set-selections
+# preset mysql pass info
+echo mysql-server-5.1 mysql-server/root_password password $SQLPWD | debconf-set-selections
+echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debconf-set-selections
+# ...
+
+
+
 # apt-get install -y mysql-server
