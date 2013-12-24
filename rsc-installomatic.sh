@@ -35,7 +35,11 @@ fi
 # ...
 
 read -p "Do you want webmin installed? (y/n)" WEBMINQ
-
+read -p "Do you want Postfix installed for mail? (y/n)" POSTFIXQ
+if [ "$POSTFIXQ" != "y" ]; then
+   read -p "Should we disable local delivery for $strHost ? (y/n)" POSTFIXDDQ
+   
+fi
 
 
 apt-get update
