@@ -3,9 +3,10 @@
 # Run as root, of course.
 # Gavin Silver - 2013 - gavinsilver@gavinsilver.com
 
-DATE=$(date +"%Y%m%d%H%M")
-logfile="rsc-installomatic"+$DATE+".log"
-exec > $logfile 2>&1
+# log doesnt work yet!
+# DATE=$(date +"%Y%m%d%H%M")
+# logfile="rsc-installomatic"+$DATE+".log"
+# exec > $logfile 2>&1
 
 echo " "
 echo " "
