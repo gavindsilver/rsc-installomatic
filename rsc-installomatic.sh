@@ -29,8 +29,7 @@ fi
 # ...
 
 
-# Ask for new root mysql password, in the future handle this better (we shouldnt output the passwd to console)
-# quit if the user typos
+#set hostname
 read -p "Set your hosrname (e.g. gavinsilver.com or www.gavinsilver.com): " NEWHOSTSTRING
 read -p "$NEWHOSTSTRING - is this correct? (y/n) " RESP
 	if [ "$RESP" != "y" ]; then
@@ -38,7 +37,11 @@ read -p "$NEWHOSTSTRING - is this correct? (y/n) " RESP
 		exit
 	fi
 /bin/hostname $NEWHOSTSTRING
+echo "Hostname Updated!"
+# ...
 
+# Ask for new root mysql password, in the future handle this better (we shouldnt output the passwd to console)
+# quit if the user typos
 read -p "What password would you like to use for the MySQL installation? " SQLPWD
 read -p "$SQLPWD - is this correct? (y/n) " RESP
 if [ "$RESP" != "y" ]; then
