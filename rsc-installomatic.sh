@@ -48,7 +48,7 @@ if [ "$NEWHOSTSTRING" != "$HOSTNAME" ]; then
 	/bin/hostname $NEWHOSTSTRING
 	echo "Hostname Updated! DON'T FORGET TO REBOOT"
 else
-	echo "That's your hostname already!"
+	echo "That's your hostname already so I am not touching anything here."
 fi
 
 # ...
@@ -132,7 +132,7 @@ if [ "$WEBMINQ" = "y" ]; then
 fi
 
 # post-apache isntall config
-echo "this is where i should alert alloqoverride for htaccess to work"
+echo "this is where i should edit allow override for htaccess to work"
 a2enmod rewrite
 service apache2 restart
 
@@ -145,7 +145,7 @@ if [ "$AUTOUPQ" = "y" ]; then
 fi
 
 
-echo " is it done? "
+echo "IT IS DONE"
 
 
 
