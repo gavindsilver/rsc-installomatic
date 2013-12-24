@@ -37,14 +37,17 @@ fi
 
 
 #set hostname
-read -p "Set your hostname (e.g. gavinsilver.com or www.gavinsilver.com): " NEWHOSTSTRING
+read -p "Set your FQDN (e.g. gavinsilver.com): " NEWHOSTSTRING
 read -p "$NEWHOSTSTRING - is this correct? (y/n) " RESP
 	if [ "$RESP" != "y" ]; then
 		echo "cowardly exiting the program because im too lazy to re-ask, run again and type correctly please"
 		exit
 	fi
+sed -ie 's|'$HOSTNAME'|'$NEWHOSTSTRING'|' /etc/hosts
 /bin/hostname $NEWHOSTSTRING
 echo "Hostname Updated!"
+echo "Restarting your network controller. Do I need to do this?"
+/etc/init.d/networking restart
 # ...
 
 # Ask for new root mysql password, in the future handle this better (we shouldnt output the passwd to console)
