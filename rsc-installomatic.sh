@@ -120,6 +120,8 @@ if [ "$POSTFIXQ" = "y" ]; then
 	echo "postfix postfix/destinations string localhost.localdomain, localhost" | debconf-set-selections
 	apt-get install -y postfix
 	/usr/sbin/postconf -e "inet_interfaces = loopback-only"
+	echo "disabling local delivery for $HOSTNAME"
+	postconf mydestination=localhost
 	echo "setting $POSTFIXALIAS as alias for root mail and restarting postfix..."
 	echo "root:	$POSTFIXALIAS" >> /etc/aliases
 	service postfix restart
@@ -135,16 +137,6 @@ a2enmod rewrite
 service apache2 restart
 
 
-## post-postfix install config setup
-# if [ "$POSTFIXQ" = "y" ]; then
-#	echo "setting $POSTFIXALIAS as alias for root mail"
-#	echo "root:	$POSTFIXALIAS" >> /etc/aliases
-#	if [ "$POSTFIXDDQ" = "y" ]; then
-#		echo "disabling local delivery for $HOSTNAME"
-#		postconf mydestination=localhost
-#	fi
-# service postfix restart
-# fi
 
 if [ "$AUTOUPQ" = "y" ]; then
 	echo "setting up unattended security updates and email alerts..."
