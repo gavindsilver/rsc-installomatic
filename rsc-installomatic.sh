@@ -80,6 +80,8 @@ read -p "Do you want to setup auto-updates? (y/n) " AUTOUPQ
 	if [ "$AUTOUPQ" = "y" ]; then
 		read -e -p "What email should we use for alerts? " ALERTALIAS
 	fi
+
+read -p "Do you want to install performancing enhancing drugs? I mean, codes? (memcache/apcopcode/apc/mod expires/headers etc ?] (y/n) " PERFEQ
 # ...
 
 
@@ -136,9 +138,22 @@ fi
 a2enmod rewrite
 sed -i '7 s/AllowOverride None/AllowOverride All/' /etc/apache2/sites-enabled/000-default
 sed -i '11 s/AllowOverride None/AllowOverride All/' /etc/apache2/sites-enabled/000-default
+
+
+if [ "$PERFEQ" = "y" ]; then
+	echo "Installing & configuring performance optimzations..."
+	a2enmod headers
+	a2enmod expires
+	apt-get install -y php-pear php5-dev make libpcre3-dev
+	pecl install apc
+	pecl install memcache
+	echo "extension=memcache.so" >> /etc/php5/apache2/php.ini
+	echo "extension=apc.so" >> /etc/php5/apache2/php.ini
+	echo "apc.shm_size = 64" >> /etc/php5/apache2/php.ini
+	echo "apc.stat = 0" >> /etc/php5/apache2/php.ini
+fi
+
 service apache2 restart
-
-
 
 if [ "$AUTOUPQ" = "y" ]; then
 	echo "setting up unattended security updates and email alerts..."
