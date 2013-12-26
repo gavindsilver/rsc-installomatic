@@ -145,8 +145,8 @@ if [ "$PERFEQ" = "y" ]; then
 	a2enmod headers
 	a2enmod expires
 	apt-get install -qq php-pear php5-dev make libpcre3-dev php5-curl php5-tidy
-	pecl install apc
-	pecl install memcache
+	printf "\n" | pecl install apc 1>&2
+	printf "\n" | pecl install memcache 1>&2
 	echo "extension=memcache.so" >> /etc/php5/apache2/php.ini
 	echo "extension=apc.so" >> /etc/php5/apache2/php.ini
 	echo "apc.shm_size = 64" >> /etc/php5/apache2/php.ini
