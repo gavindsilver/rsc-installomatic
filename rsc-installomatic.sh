@@ -90,7 +90,7 @@ read -p "Do you want to install performancing enhancing drugs? I mean, codes? (m
 # Do webmin Stuff
 if [ "$WEBMINQ" = "y" ]; then
 	echo "Adding webmin keys and repos"
-	wget -P /root/ http://www.webmin.com/jcameron-key.asc
+	wget –quiet -P /root/ http://www.webmin.com/jcameron-key.asc
 	apt-key add /root/jcameron-key.asc
 	echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
 	echo "deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib" >> /etc/apt/sources.list	
@@ -100,8 +100,8 @@ fi
 
 
 # update & upgrade
-apt-get update
-apt-get -qq upgrade
+apt-get update -qq
+apt-get upgrade -qq
 # ..
 
 # add pre-req for webmin
@@ -147,10 +147,12 @@ if [ "$PERFEQ" = "y" ]; then
 	apt-get install -qq php-pear php5-dev make libpcre3-dev php5-curl php5-tidy 
 	printf "\n" | pecl install apc 1>&2
 	printf "\n" | pecl install memcache 1>&2
+	echo "adding all the extension config info that pecl bitches about..."
 	echo "extension=memcache.so" >> /etc/php5/apache2/php.ini
 	echo "extension=apc.so" >> /etc/php5/apache2/php.ini
 	echo "apc.shm_size = 64" >> /etc/php5/apache2/php.ini
 	echo "apc.stat = 0" >> /etc/php5/apache2/php.ini
+	echo "...done"
 fi
 
 service apache2 restart
