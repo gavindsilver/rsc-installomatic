@@ -115,7 +115,7 @@ echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debcon
 # ...
 
 # DO IT!
-apt-get install -y lamp-server^ php5-gd
+apt-get install -y lamp-server^ php5-gd php5-curl php5-tidy
 
 if [ "$POSTFIXQ" = "y" ]; then
 	echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections
