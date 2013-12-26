@@ -157,7 +157,7 @@ service apache2 restart
 
 if [ "$AUTOUPQ" = "y" ]; then
 	echo "setting up unattended security updates and email alerts..."
-	apt-get install -qq unattended-upgrades apticron;sed -i -e 's/root/alerts@vanwestmedia.com/' /etc/apticron/apticron.conf
+	apt-get install -qq unattended-upgrades apticron;sed -i -e 's/root/'$ALERTALIAS'/' /etc/apticron/apticron.conf
 	sed -i -e 's|//Unattended-Upgrade::Mail "root@localhost"|Unattended-Upgrade::Mail '$ALERTALIAS'|' /etc/apt/apt.conf.d/50unattended-upgrades
 fi
 
