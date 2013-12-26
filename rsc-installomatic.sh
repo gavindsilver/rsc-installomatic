@@ -105,7 +105,7 @@ apt-get -qq upgrade
 # ..
 
 # add pre-req for webmin
-apt-get install -qq perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+apt-get install -qq perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python 1>&2
 
 
 # preset mysql pass info
@@ -144,7 +144,7 @@ if [ "$PERFEQ" = "y" ]; then
 	echo "Installing & configuring performance optimzations..."
 	a2enmod headers
 	a2enmod expires
-	apt-get install -qq php-pear php5-dev make libpcre3-dev php5-curl php5-tidy
+	apt-get install -qq php-pear php5-dev make libpcre3-dev php5-curl php5-tidy 
 	printf "\n" | pecl install apc 1>&2
 	printf "\n" | pecl install memcache 1>&2
 	echo "extension=memcache.so" >> /etc/php5/apache2/php.ini
