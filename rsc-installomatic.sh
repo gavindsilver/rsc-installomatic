@@ -3,16 +3,17 @@
 # Run as root, of course.
 # Gavin Silver - 2013 - gavinsilver@gavinsilver.com
 
-# log doesnt work yet!
+#log doesnt work yet!
 # DATE=$(date +"%Y%m%d%H%M")
 # logfile="rsc-installomatic"+$DATE+".log"
-# exec > $logfile 2>&1
+
 
 echo " "
 echo " "
 echo " "
 echo "Welcome to Gavin's wonderful install-o-matic for rackspace cloud servers"
-echo ""
+# touch /var/log/$logfile
+# echo "... creating a logfile: $logfile "
 echo " "
 
 # Make sure only root can run our script
@@ -82,12 +83,7 @@ read -p "Do you want to setup auto-updates? (y/n) " AUTOUPQ
 # ...
 
 
-# echo my output so far for testing
-# echo "your mysql pwd will be $SQLPWD"
-# echo "install webmin?- $WEBMINQ"
-# echo "install postfix?- $POSTFIXQ"
-# echo "your postfix alias is- $POSTFIXALIAS"
-# echo "are we disabling local delivery for $HOSTNAME ? - $POSTFIXDDQ "
+
 
 # Do webmin Stuff
 if [ "$WEBMINQ" = "y" ]; then
@@ -136,9 +132,10 @@ if [ "$WEBMINQ" = "y" ]; then
 	apt-get install -y webmin
 fi
 
-# post-apache isntall config
-echo "this is where i should edit allow override for htaccess to work"
+# post-apache install config
 a2enmod rewrite
+sed -i '7 s/AllowOverride None/AllowOverride All/' /etc/apache2/sites-enabled/000-default
+sed -i '11 s/AllowOverride None/AllowOverride All/' /etc/apache2/sites-enabled/000-default
 service apache2 restart
 
 
@@ -149,8 +146,15 @@ if [ "$AUTOUPQ" = "y" ]; then
 	sed -i -e 's|//Unattended-Upgrade::Mail "root@localhost"|Unattended-Upgrade::Mail '$ALERTALIAS'|' /etc/apt/apt.conf.d/50unattended-upgrades
 fi
 
+echo "FINISHED!!!!"
 
-echo "IT IS DONE"
+
+# show results
+# echo "your mysql pwd is $SQLPWD"
+# echo "install webmin?- $WEBMINQ"
+# echo "install postfix?- $POSTFIXQ"
+# echo "your postfix alias is- $POSTFIXALIAS"
+# echo "are we disabling local delivery for $HOSTNAME ? - $POSTFIXDDQ "
 
 
 
