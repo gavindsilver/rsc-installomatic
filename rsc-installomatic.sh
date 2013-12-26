@@ -115,7 +115,7 @@ echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debcon
 # ...
 
 # DO IT!
-apt-get install -y lamp-server^ php5-gd php5-curl php5-tidy
+apt-get install -y lamp-server^ php5-gd
 
 if [ "$POSTFIXQ" = "y" ]; then
 	echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections
@@ -144,7 +144,7 @@ if [ "$PERFEQ" = "y" ]; then
 	echo "Installing & configuring performance optimzations..."
 	a2enmod headers
 	a2enmod expires
-	apt-get install -y php-pear php5-dev make libpcre3-dev
+	apt-get install -y php-pear php5-dev make libpcre3-dev php5-curl php5-tidy
 	pecl install apc
 	pecl install memcache
 	echo "extension=memcache.so" >> /etc/php5/apache2/php.ini
