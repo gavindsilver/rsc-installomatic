@@ -101,11 +101,11 @@ fi
 
 # update & upgrade
 apt-get update
-apt-get -y upgrade
+apt-get -qq upgrade
 # ..
 
 # add pre-req for webmin
-apt-get install -y perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+apt-get install -qq perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
 
 
 # preset mysql pass info
@@ -115,13 +115,13 @@ echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debcon
 # ...
 
 # DO IT!
-apt-get install -y lamp-server^ php5-gd
+apt-get install -qq lamp-server^ php5-gd
 
 if [ "$POSTFIXQ" = "y" ]; then
 	echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections
 	echo "postfix postfix/mailname string $HOSTNAME" | debconf-set-selections
 	echo "postfix postfix/destinations string localhost.localdomain, localhost" | debconf-set-selections
-	apt-get install -y postfix
+	apt-get install -qq postfix
 	/usr/sbin/postconf -e "inet_interfaces = loopback-only"
 	echo "disabling local delivery for $HOSTNAME"
 	postconf mydestination=localhost
@@ -131,7 +131,7 @@ if [ "$POSTFIXQ" = "y" ]; then
 fi
 
 if [ "$WEBMINQ" = "y" ]; then
-	apt-get install -y webmin
+	apt-get install -qq webmin
 fi
 
 # post-apache install config
@@ -144,7 +144,7 @@ if [ "$PERFEQ" = "y" ]; then
 	echo "Installing & configuring performance optimzations..."
 	a2enmod headers
 	a2enmod expires
-	apt-get install -y php-pear php5-dev make libpcre3-dev php5-curl php5-tidy
+	apt-get install -qq php-pear php5-dev make libpcre3-dev php5-curl php5-tidy
 	pecl install apc
 	pecl install memcache
 	echo "extension=memcache.so" >> /etc/php5/apache2/php.ini
@@ -157,7 +157,7 @@ service apache2 restart
 
 if [ "$AUTOUPQ" = "y" ]; then
 	echo "setting up unattended security updates and email alerts..."
-	apt-get -y install unattended-upgrades apticron;sed -i -e 's/root/alerts@vanwestmedia.com/' /etc/apticron/apticron.conf
+	apt-get install -qq unattended-upgrades apticron;sed -i -e 's/root/alerts@vanwestmedia.com/' /etc/apticron/apticron.conf
 	sed -i -e 's|//Unattended-Upgrade::Mail "root@localhost"|Unattended-Upgrade::Mail '$ALERTALIAS'|' /etc/apt/apt.conf.d/50unattended-upgrades
 fi
 
@@ -170,7 +170,6 @@ echo "FINISHED!!!!"
 # echo "install postfix?- $POSTFIXQ"
 # echo "your postfix alias is- $POSTFIXALIAS"
 # echo "are we disabling local delivery for $HOSTNAME ? - $POSTFIXDDQ "
-
 
 
 
