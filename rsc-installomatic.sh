@@ -96,7 +96,7 @@ read -p "I can also install the latest version of WordPress for you.. interested
 # Do webmin Stuff
 if [ "$WEBMINQ" = "y" ]; then
 	echo "Adding webmin keys and repos"
-	wget –quiet -P /root/ http://www.webmin.com/jcameron-key.asc
+	wget -P /root/ http://www.webmin.com/jcameron-key.asc -q
 	apt-key add /root/jcameron-key.asc
 	echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
 	echo "deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib" >> /etc/apt/sources.list	
@@ -121,7 +121,7 @@ echo mysql-server-5.1 mysql-server/root_password_again password $SQLPWD | debcon
 # ...
 
 # DO IT!
-apt-get install -qq lamp-server^ php5-gd
+apt-get install -qq lamp-server^ php5-gd unzip
 
 if [ "$POSTFIXQ" = "y" ]; then
 	echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections
@@ -174,7 +174,7 @@ fi
 
 #Wordpress latest
 if [ "$WORDPRESSQ" = "y" ]; then
-	wget –quiet -P /var/www http://wordpress.org/latest.tar.gz
+	wget -P /var/www http://wordpress.org/latest.tar.gz -q
 	tar -xf /var/www/latest.tar.gz -C /var/www
 	mv /var/www/wordpress/* /var/www/
 	rm -rf /var/www/wordpress /var/www/latest.tar.gz
@@ -182,9 +182,24 @@ if [ "$WORDPRESSQ" = "y" ]; then
 	rm -f /var/www/index.html
 	CMD="create database rsc_wordpress;"
 	mysql -u root -p'$SQLPWD' -e "$CMD"
+	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/w3-total-cache.zip -q
+	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/better-wp-security.zip -q
+	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/velvet-blues-update-urls.zip -q
+	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/all-in-one-seo-pack.zip -q
+	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/wp-recaptcha.zip -q
+	unzip /var/www/wp-content/plugins/*.zip -d /var/www/wp-content/plugins/
+	rm -rf /var/www/wp-content/plugins/*.zip
+	
 fi
 
+
+
+
+
 #...
+
+
+
 
 
 echo " "
