@@ -158,7 +158,7 @@ if [ "$PERFEQ" = "y" ]; then
 	echo "extension=apc.so" >> /etc/php5/apache2/php.ini
 	echo "apc.shm_size = 64" >> /etc/php5/apache2/php.ini
 	echo "apc.stat = 0" >> /etc/php5/apache2/php.ini
-	cp /usr/share/doc/php-apc /var/www/$RAND.php
+	cp /usr/share/php/apc.php /var/www/$RAND.php
 	echo "...done"
 fi
 
@@ -237,15 +237,15 @@ echo "postfix installed?: $POSTFIXQ" >> $EMAILMESSAGE
 echo "postmaster/root alias: $POSTFIXALIAS" >> $EMAILMESSAGE
 echo "webmin installed?: $WEBMINQ" >> $EMAILMESSAGE
 	if [ "$WEBMINQ" = "y" ]; then
-		echo "webmin address: https://$hostname:10000" >> $EMAILMESSAGE
+		echo "webmin address: https://$HOSTNAME:10000" >> $EMAILMESSAGE
 	fi
 echo "performance options enabled/installed?: $PERFEQ" >> $EMAILMESSAGE
 	if [ "$PERFEQ" = "y" ]; then
-		echo "apc script check: http://$hostname/$RAND.php" >> $EMAILMESSAGE
+		echo "apc script check: http://$HOSTNAME/$RAND.php" >> $EMAILMESSAGE
 	fi
 echo "latest wordpress installed?: $WORDPRESSQ" >> $EMAILMESSAGE
 	if [ "$WORDPRESSQ" = "y" ]; then
-		echo "FINISH YOUR WORDPRESS INSTALL: http://$hostname" >> $EMAILMESSAGE
+		echo "FINISH YOUR WORDPRESS INSTALL: http://$HOSTNAME" >> $EMAILMESSAGE
 		echo "New Wordpress Database: rsc_wordpress" >> $EMAILMESSAGE
 	fi
 # send an email using /bin/mail
