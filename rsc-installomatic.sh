@@ -180,15 +180,18 @@ if [ "$WORDPRESSQ" = "y" ]; then
 	rm -rf /var/www/wordpress /var/www/latest.tar.gz
 	chown -R www-data:www-data /var/www
 	rm -f /var/www/index.html
-	CMD="create database rsc_wordpress;"
-	mysql -u root -p'$SQLPWD' -e "$CMD"
+	
+#	CMD="create database rsc_wordpress;"
+#	mysql -u root -p$SQLPWD -e "$CMD"
+	
+#add plugins	
 	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/w3-total-cache.zip -q
 	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/better-wp-security.zip -q
 	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/velvet-blues-update-urls.zip -q
 	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/all-in-one-seo-pack.zip -q
 	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/wp-recaptcha.zip -q
-	unzip /var/www/wp-content/plugins/*.zip -d /var/www/wp-content/plugins/
-	rm -rf /var/www/wp-content/plugins/*.zip
+	unzip /var/www/wp-content/plugins/\*.zip -d /var/www/wp-content/plugins/
+	rm -rf /var/www/wp-content/plugins/\*.zip
 	
 fi
 
@@ -209,7 +212,7 @@ echo " "
 
 read -p "Do you want an email with the details? (y/n) " SENDEMAILQ
 	if [ "$SENDEMAILQ" = "y" ]; then
-		read -e -p "Enter E-Mail Address:" EMAIL
+		read -e -p "Enter E-Mail Address:  " EMAIL
 	fi
 	
 echo " "
