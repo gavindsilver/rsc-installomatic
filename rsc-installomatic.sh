@@ -88,7 +88,7 @@ read -p "Do you want to install performancing enhancing drugs? I mean, codes? [m
 # ...
 
 #wordpress latest
-read -p "I can also install the latest version of WordPress for you.. interested?" WORDPRESSQ
+read -p "I can also install the latest version of WordPress for you.. interested? " WORDPRESSQ
 
 
 
@@ -171,8 +171,26 @@ if [ "$AUTOUPQ" = "y" ]; then
 	sed -i -e 's/root/'$ALERTALIAS'/' /etc/apticron/apticron.conf
 	sed -i -e 's|//Unattended-Upgrade::Mail "root@localhost"|Unattended-Upgrade::Mail '$ALERTALIAS'|' /etc/apt/apt.conf.d/50unattended-upgrades
 fi
+
+#Wordpress latest
+if [ "$WORDPRESSQ" = "y" ]; then
+	wget –quiet -P /var/www http://wordpress.org/latest.tar.gz
+	tar -xf /var/www/latest.tar.gz -C /var/www
+	mv /var/www/wordpress/* /var/www/
+	rm -rf /var/www/wordpress /var/www/latest.tar.gz
+	chown -R www-data:www-data /var/www
+	rm -f /var/www/index.html
+	CMD="create database rsc_wordpress;"
+	mysql -u root -p'$SQLPWD' -e "$CMD"
+fi
+
+#...
+
+
 echo " "
 echo " "
+
+
 
 read -p "Do you want an email with the details? (y/n) " SENDEMAILQ
 	if [ "$SENDEMAILQ" = "y" ]; then
@@ -183,17 +201,7 @@ echo " "
 #...
 
 
-#Wordpress latest
-if [ "$WORDPRESSQ" = "y" ]; then
-	wget –quiet -P /var/www http://wordpress.org/latest.tar.gz
-	tar -xf /var/www/latest.tar.gz /var/www
-	mv /var/www/wordpress/* /var/www/
-	rm -rf /var/www/wordpress
-	chown -R www-data:www-data /var/www
-	rm -f /var/www/index.html
-fi
 
-#...
 
 
 
@@ -201,26 +209,27 @@ fi
 EMAILMESSAGE="/var/log/$logfile"
 SUBJECT="NEW RSC-INSTALLOMATIC RUN ON $HOSTNAME"
 echo "NEW RSC-INSTALLOMATIC RUN ON $HOSTNAME" > $EMAILMESSAGE
-echo "date: $DATE" >> $EMAILCONTENT
-echo "hostname: $HOSTNAME" >> $EMAILCONTENT
-echo "root_db_pwd: $SQLPWD" >> $EMAILCONTENT
-echo "postfix installed?: $POSTFIXQ" >> $EMAILCONTENT
-echo "postmaster/root alias: $POSTFIXALIAS" >> $EMAILCONTENT
-echo "webmin installed?: $WEBMINQ" >> $EMAILCONTENT
+echo "date: $DATE" >> $EMAILMESSAGE
+echo "hostname: $HOSTNAME" >> $EMAILMESSAGE
+echo "root_db_pwd: $SQLPWD" >> $EMAILMESSAGE
+echo "postfix installed?: $POSTFIXQ" >> $EMAILMESSAGE
+echo "postmaster/root alias: $POSTFIXALIAS" >> $EMAILMESSAGE
+echo "webmin installed?: $WEBMINQ" >> $EMAILMESSAGE
 	if [ "$WEBMINQ" = "y" ]; then
-		echo "webmin address: https://$hostname:10000" >> $EMAILCONTENT
+		echo "webmin address: https://$hostname:10000" >> $EMAILMESSAGE
 	fi
-echo "performance options enabled/installed?: $PERFEQ" >> $EMAILCONTENT
+echo "performance options enabled/installed?: $PERFEQ" >> $EMAILMESSAGE
 	if [ "$PERFEQ" = "y" ]; then
-		echo "apc script check: http://$hostname/$RAND.php" >> $EMAILCONTENT
+		echo "apc script check: http://$hostname/$RAND.php" >> $EMAILMESSAGE
 	fi
-echo "latest wordpress installed?: $WORDPRESSQ" >> $EMAILCONTENT
+echo "latest wordpress installed?: $WORDPRESSQ" >> $EMAILMESSAGE
 	if [ "$WORDPRESSQ" = "y" ]; then
-		echo "FINISH YOUR WORDPRESS INSTALL: http://$hostname" >> $EMAILCONTENT
+		echo "FINISH YOUR WORDPRESS INSTALL: http://$hostname" >> $EMAILMESSAGE
+		echo "New Wordpress Database: rsc_wordpress" >> $EMAILMESSAGE
 	fi
 # send an email using /bin/mail
 if [ "$SENDEMAILQ" = "y" ]; then
-	/bin/mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
+	mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
 fi
 
 
