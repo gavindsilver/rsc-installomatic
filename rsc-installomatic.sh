@@ -5,7 +5,7 @@
 
 #log doesnt work yet!
 DATE=$(date +"%Y%m%d%H%M")
-logfile="rsc-installomatic"+$DATE+".log"
+logfile="rsc-installomatic"$DATE".log"
 # get a random string why not?!!?
 RAND=`tr -cd '[:alnum:]' < /dev/urandom | fold -w10 | head -n1`
 
@@ -190,8 +190,11 @@ if [ "$WORDPRESSQ" = "y" ]; then
 	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/velvet-blues-update-urls.zip -q
 	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/all-in-one-seo-pack.zip -q
 	wget -P /var/www/wp-content/plugins/ http://downloads.wordpress.org/plugin/wp-recaptcha.zip -q
-	unzip /var/www/wp-content/plugins/\*.zip -d /var/www/wp-content/plugins/
-	rm -rf /var/www/wp-content/plugins/\*.zip
+	unzip /var/www/wp-content/plugins/better-wp-security.zip -d /var/www/wp-content/plugins/
+	unzip /var/www/wp-content/plugins/velvet-blues-update-urls.zip -d /var/www/wp-content/plugins/
+	unzip /var/www/wp-content/plugins/all-in-one-seo-pack.zip -d /var/www/wp-content/plugins/
+	unzip /var/www/wp-content/plugins/wp-recaptcha.zip -d /var/www/wp-content/plugins/
+	rm -rf /var/www/wp-content/plugins/*.zip
 	
 fi
 
