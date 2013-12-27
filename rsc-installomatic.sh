@@ -4,9 +4,10 @@
 # Gavin Silver - 2013 - gavinsilver@gavinsilver.com
 
 #log doesnt work yet!
-# DATE=$(date +"%Y%m%d%H%M")
-# logfile="rsc-installomatic"+$DATE+".log"
-
+DATE=$(date +"%Y%m%d%H%M")
+logfile="rsc-installomatic"+$DATE+".log"
+# get a random string why not?!!?
+RAND=`tr -cd '[:alnum:]' < /dev/urandom | fold -w10 | head -n1`
 
 echo " "
 echo " "
@@ -15,6 +16,8 @@ echo "Welcome to Gavin's wonderful install-o-matic for rackspace cloud servers"
 # touch /var/log/$logfile
 # echo "... creating a logfile: $logfile "
 echo " "
+
+
 
 # Make sure only root can run our script
 if [[ $EUID -ne 0 ]]; then
@@ -81,7 +84,7 @@ read -p "Do you want to setup auto-updates? (y/n) " AUTOUPQ
 		read -e -p "What email should we use for alerts? " ALERTALIAS
 	fi
 
-read -p "Do you want to install performancing enhancing drugs? I mean, codes? (memcache/apcopcode/apc/mod expires/headers etc ?] (y/n) " PERFEQ
+read -p "Do you want to install performancing enhancing drugs? I mean, codes? [memcache/apc/opcode/mod_expires|headers etc ?] (y/n) " PERFEQ
 # ...
 
 
@@ -152,6 +155,7 @@ if [ "$PERFEQ" = "y" ]; then
 	echo "extension=apc.so" >> /etc/php5/apache2/php.ini
 	echo "apc.shm_size = 64" >> /etc/php5/apache2/php.ini
 	echo "apc.stat = 0" >> /etc/php5/apache2/php.ini
+	cp /usr/share/doc/php-apc /var/www/$RAND.php
 	echo "...done"
 fi
 
@@ -166,7 +170,33 @@ fi
 echo " "
 echo " "
 echo "FINISHED!!!!"
+read -p "Do you want an email with the details? (y/n) " RESP
+	if [ "$RESP" = "y" ]; then
+		read -e -p "Enter E-Mail Address:" EMAIL
+	fi
+	
 echo " "
+
+
+# Build E-Mail
+EMAILMESSAGE="/var/log/$logfile"
+SUBJECT="NEW RSC-INSTALLOMATIC RUN ON $HOSTNAME"
+echo "NEW RSC-INSTALLOMATIC RUN ON $HOSTNAME" > $EMAILMESSAGE
+echo "date: $DATE" >> $EMAILCONTENT
+echo "hostname: $HOSTNAME" >> $EMAILCONTENT
+echo "root_db_pwd: $SQLPWD" >> $EMAILCONTENT
+echo "postfix installed?: $POSTFIXQ" >> $EMAILCONTENT
+echo "postmaster/root alias: $POSTFIXALIAS" >> $EMAILCONTENT
+echo "webmin installed?: $WEBMINQ" >> $EMAILCONTENT
+	if [ "$WEBMINQ" = "y" ]; then
+		echo "webmin address: https://$hostname:10000" >> $EMAILCONTENT
+	fi
+echo "performance options enabled/installed?: $PERFEQ" >> $EMAILCONTENT
+	if [ "$PERFEQ" = "y" ]; then
+		echo "apc script check: http://$hostname/$RAND.php" >> $EMAILCONTENT
+	fi
+# send an email using /bin/mail
+/bin/mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
 
 
 # show results
