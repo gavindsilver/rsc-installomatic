@@ -87,6 +87,9 @@ read -p "Do you want to setup auto-updates? (y/n) " AUTOUPQ
 read -p "Do you want to install performancing enhancing drugs? I mean, codes? [memcache/apc/opcode/mod_expires|headers etc ?] (y/n) " PERFEQ
 # ...
 
+#wordpress latest
+read -p "I can also install the latest version of WordPress for you.. interested?" WORDPRESSQ
+
 
 
 
@@ -161,6 +164,7 @@ fi
 
 service apache2 restart
 
+# auto updates
 if [ "$AUTOUPQ" = "y" ]; then
 	echo "setting up unattended security updates and email alerts..."
 	apt-get install -qq unattended-upgrades apticron
@@ -169,13 +173,28 @@ if [ "$AUTOUPQ" = "y" ]; then
 fi
 echo " "
 echo " "
-echo "FINISHED!!!!"
-read -p "Do you want an email with the details? (y/n) " RESP
-	if [ "$RESP" = "y" ]; then
+
+read -p "Do you want an email with the details? (y/n) " SENDEMAILQ
+	if [ "$SENDEMAILQ" = "y" ]; then
 		read -e -p "Enter E-Mail Address:" EMAIL
 	fi
 	
 echo " "
+#...
+
+
+#Wordpress latest
+if [ "$WORDPRESSQ" = "y" ]; then
+	wget –quiet -P /var/www http://wordpress.org/latest.tar.gz
+	tar -xf /var/www/latest.tar.gz /var/www
+	mv /var/www/wordpress/* /var/www/
+	rm -rf /var/www/wordpress
+	chown -R www-data:www-data /var/www
+	rm -f /var/www/index.html
+fi
+
+#...
+
 
 
 # Build E-Mail
@@ -195,9 +214,17 @@ echo "performance options enabled/installed?: $PERFEQ" >> $EMAILCONTENT
 	if [ "$PERFEQ" = "y" ]; then
 		echo "apc script check: http://$hostname/$RAND.php" >> $EMAILCONTENT
 	fi
+echo "latest wordpress installed?: $WORDPRESSQ" >> $EMAILCONTENT
+	if [ "$WORDPRESSQ" = "y" ]; then
+		echo "FINISH YOUR WORDPRESS INSTALL: http://$hostname" >> $EMAILCONTENT
+	fi
 # send an email using /bin/mail
-/bin/mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
+if [ "$SENDEMAILQ" = "y" ]; then
+	/bin/mail -s "$SUBJECT" "$EMAIL" < $EMAILMESSAGE
+fi
 
+
+echo "FINISHED!!!!"
 
 # show results
 # echo "your mysql pwd is $SQLPWD"
