@@ -88,7 +88,7 @@ read -p "Do you want to install performancing enhancing drugs? I mean, codes? [m
 # ...
 
 #wordpress latest
-read -p "I can also install the latest version of WordPress for you.. interested? " WORDPRESSQ
+read -p "I can also install the latest version of WordPress for you.. interested? (y/n) " WORDPRESSQ
 
 
 
