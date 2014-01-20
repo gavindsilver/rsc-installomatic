@@ -1,5 +1,5 @@
 #!/bin/bash
-# rackspace-wordpress-inallomatic, version 1
+# rackspace-wordpress-installomatic, version 1
 # Run as root, of course.
 # Gavin Silver - 2013 - gavinsilver@gavinsilver.com
 
@@ -29,7 +29,7 @@ fi
 # Version check for Ubuntu 12.04
 . /etc/lsb-release
 if [ "$DISTRIB_RELEASE" != "12.04" ]; then
-   echo "This script is only tested to work (sorta) on Ubuntu 12.04 LTS. Exiting." 1>&2
+   echo "This script is only tested to work on Ubuntu 12.04 LTS. Exiting." 1>&2
    exit 1
 fi
 # ...
