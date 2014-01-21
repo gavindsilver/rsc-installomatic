@@ -159,6 +159,7 @@ if [ "$PERFEQ" = "y" ]; then
 	echo "apc.shm_size = 64" >> /etc/php5/apache2/php.ini
 	echo "apc.stat = 0" >> /etc/php5/apache2/php.ini
 	cp /usr/share/php/apc.php /var/www/$RAND.php
+	chown -R www-data:www-data /var/www
 	echo "...done"
 fi
 
@@ -178,7 +179,6 @@ if [ "$WORDPRESSQ" = "y" ]; then
 	tar -xf /var/www/latest.tar.gz -C /var/www
 	mv /var/www/wordpress/* /var/www/
 	rm -rf /var/www/wordpress /var/www/latest.tar.gz
-	chown -R www-data:www-data /var/www
 	rm -f /var/www/index.html
 	
 #	CMD="create database rsc_wordpress;"
@@ -195,6 +195,7 @@ if [ "$WORDPRESSQ" = "y" ]; then
 	unzip /var/www/wp-content/plugins/all-in-one-seo-pack.zip -d /var/www/wp-content/plugins/
 	unzip /var/www/wp-content/plugins/wp-recaptcha.zip -d /var/www/wp-content/plugins/
 	rm -rf /var/www/wp-content/plugins/*.zip
+	chown -R www-data:www-data /var/www
 	
 fi
 
