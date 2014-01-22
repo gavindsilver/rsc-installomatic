@@ -84,7 +84,7 @@ read -p "Do you want to setup auto-updates? (y/n) " AUTOUPQ
 		read -e -p "What email should we use for alerts? " ALERTALIAS
 	fi
 
-read -p "Do you want to install performancing enhancing drugs? I mean, codes? [memcache/apc/opcode/mod_expires|headers etc ?] (y/n) " PERFEQ
+read -p "Do you want to install performance enhancing drugs? I mean, codes? [memcache/apc/opcode/mod_expires|headers etc ?] (y/n) " PERFEQ
 # ...
 
 #wordpress latest
