@@ -127,7 +127,7 @@ if [ "$POSTFIXQ" = "y" ]; then
 	echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections
 	echo "postfix postfix/mailname string $HOSTNAME" | debconf-set-selections
 	echo "postfix postfix/destinations string localhost.localdomain, localhost" | debconf-set-selections
-	apt-get install -qq postfix
+	apt-get install -qq postfix mailutils
 	/usr/sbin/postconf -e "inet_interfaces = loopback-only"
 	echo "disabling local delivery for $HOSTNAME"
 	postconf mydestination=localhost
@@ -213,13 +213,14 @@ echo " "
 echo " "
 
 
-
-read -p "Do you want an email with the details? (y/n) " SENDEMAILQ
-	if [ "$SENDEMAILQ" = "y" ]; then
-		read -e -p "Enter E-Mail Address:  " EMAIL
-	fi
+if [ "$POSTFIXQ" = "y" ]; then
+	read -p "Do you want an email with the details? (y/n) " SENDEMAILQ
+		if [ "$SENDEMAILQ" = "y" ]; then
+			read -e -p "Enter E-Mail Address:  " EMAIL
+		fi
 	
-echo " "
+	echo " "
+fi
 #...
 
 
