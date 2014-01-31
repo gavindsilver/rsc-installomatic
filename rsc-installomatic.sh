@@ -43,7 +43,12 @@ else
 	exit 1
 fi
 # ...
-
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) echo "Glad to hear it, let's get started";;
+        No ) echo "okay then..."; exit;;
+    esac
+done
 
 #set hostname
 read -p "Set your FQDN (e.g. gavinsilver.com): " NEWHOSTSTRING
